@@ -73,6 +73,24 @@ You can use the '-declutter' option to prevent caching downloaded archives:
 
     $ sudo ./update-golang.sh -declutter
 
+Proxy
+======
+
+该部分增加了proxy
+
+```shell
+ if has_cmd wget; then
+    wget -e use_proxy=on -e http_proxy=127.0.0.1:1087 -O "$abs_filepath" "$url" || die could not download using wget from: "$url"
+    [ -f "$abs_filepath" ] || die missing file downloaded with wget: "$abs_filepath"
+elif has_cmd curl; then
+    curl --socks5 127.0.0.1:1080 -o "$abs_filepath" "$url" || die could not download using curl from: "$url"
+    [ -f "$abs_filepath" ] || die missing file downloaded with curl: "$abs_filepath"
+else
+    die "download: missing both 'wget' and 'curl'"
+fi
+```
+
+
 Example
 =======
 
@@ -159,7 +177,7 @@ The per-user installation does not need root (sudo) privileges.
 Example:
 
     This example will install Golang under ~/golang for current user only.
-    
+
     $ mkdir ~/golang
     $ DESTINATION=~/golang PROFILED=~/.profile ./update-golang.sh
 

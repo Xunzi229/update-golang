@@ -202,10 +202,10 @@ download() {
             msg no need to download - file cached: "$abs_filepath"
         else
             if has_cmd wget; then
-                wget -O "$abs_filepath" "$url" || die could not download using wget from: "$url"
+                wget -e use_proxy=on -e http_proxy=127.0.0.1:1087 -O "$abs_filepath" "$url" || die could not download using wget from: "$url"
                 [ -f "$abs_filepath" ] || die missing file downloaded with wget: "$abs_filepath"
             elif has_cmd curl; then
-                curl -o "$abs_filepath" "$url" || die could not download using curl from: "$url"
+                curl --socks5 127.0.0.1:1080 -o "$abs_filepath" "$url" || die could not download using curl from: "$url"
                 [ -f "$abs_filepath" ] || die missing file downloaded with curl: "$abs_filepath"
             else
                 die "download: missing both 'wget' and 'curl'"

@@ -195,6 +195,7 @@ abs_gobin=$abs_goroot/bin
 abs_gotool=$abs_gobin/go
 abs_profiled=$(solve "$profiled")
 
+
 download() {
     if echo "$url" | grep -E -q '^https?:'; then
         msg "$url" is remote
@@ -203,7 +204,7 @@ download() {
         else
             if has_cmd wget; then
                 echo -e "\033[34m使用wget下载golang 原始包文件， 使用 http 代理\n \033[0m"
-                wget -e use_proxy=on -e http_proxy=127.0.0.1:1087 -O "$abs_filepath" "$url" || die could not download using wget from: "$url"
+                wget -e use_proxy=on -e http_proxy=127.0.0.1:1087 -e https_proxy=http://127.0.0.1:1087 -O "$abs_filepath" "$url" || die could not download using wget from: "$url"
                 [ -f "$abs_filepath" ] || die missing file downloaded with wget: "$abs_filepath"
             elif has_cmd curl; then
                 echo -e "\033[34m使用curl下载 golang 原始包文件， 使用 socks 代理\n \033[0m"
